@@ -6,10 +6,20 @@ const productSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
+    trim: true,
   },
   price: {
     type: Number,
     required: true,
+  },
+  onSale: {
+    type: Boolean,
+    required: true,
+  },
+  review: {
+    type: Schema.Types.ObjectId,
+    ref: 'Review',
   },
 });
 
