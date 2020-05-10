@@ -3,7 +3,7 @@ const express = require('express');
 const router = new express.Router();
 
 const { Review } = require('../models');
-const { ErrorHandler } = require('../helpers/error');
+const { ErrorHandler } = require('../middlewares/error');
 
 router.get('/reviews', async (req, res, next) => {
   try {
