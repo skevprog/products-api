@@ -2,7 +2,6 @@ const multer = require('multer');
 const { ErrorHandler } = require('./error');
 
 const storage = multer.diskStorage({
-  destination: 'uploads/',
   filename(req, file, cb) {
     cb(null, new Date().toISOString() + file.originalname); // Appending extension
   },

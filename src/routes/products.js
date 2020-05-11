@@ -1,4 +1,6 @@
 const express = require('express');
+const sharp = require('sharp');
+const fs = require('fs');
 
 const router = new express.Router();
 const { ErrorHandler } = require('../middlewares/error');
@@ -23,7 +25,17 @@ router.post(
       if (!req.file) {
         throw new ErrorHandler(400, 'Please provide an image');
       }
-      const product = new Product({ name, price, onSale, productImage: req.file.path });
+      // Resize the image
+      const imgFolder = `uploads/${req.file.filename}`;
+      await sharp(req.file.path)
+        .resize(200)
+        .toFormat('png')
+        .toFile(imgFolder);
+      // Delete the orignal file
+      fs.unlink(req.file.path, err => {
+        if (err) throw new ErrorHandler(500, err);
+      });
+      const product = new Product({ name, price, onSale, productImage: imgFolder });
       await product.save();
       res.status(201).send(product);
     } catch (error) {
